@@ -11,6 +11,7 @@ import torchvision
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
 from pytorch_nndct.apis import torch_quantizer, dump_xmodel
 
 from common import *
@@ -20,7 +21,6 @@ DIVIDER = '-----------------------------------------'
 
 def quantize(build_dir, quant_mode, batchsize):
 
-    dataset_dir = build_dir + '/dataset'
     float_model = build_dir + '/float_model'
     quant_model = build_dir + '/quant_model'
 
@@ -42,7 +42,7 @@ def quantize(build_dir, quant_mode, batchsize):
 
     # dataset
     test_data = datasets.ImageFolder(
-        dataset_dir + '/Trail_dataset/test_data',
+        'dataset/Trail_dataset/test_data',
         transform = transforms.Compose([transforms.ToTensor()])                         
     )
 
@@ -52,12 +52,13 @@ def quantize(build_dir, quant_mode, batchsize):
                              shuffle=True,
                              num_workers=2)
 
-    # evaluate
+    # evaluate quantized model
     test(quantized_model, device, test_loader)
 
     # export config
     if quant_mode == 'calib':
         quantizer.export_quant_config()
+    # convert to xmodel
     if quant_mode == 'test':
         quantizer.export_xmodel(deploy_check=False, output_dir=quant_model)
 
