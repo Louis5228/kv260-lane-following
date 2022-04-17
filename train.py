@@ -18,8 +18,7 @@ DIVIDER = '-----------------------------------------'
 
 
 def train_test(build_dir, batchsize, learnrate, epochs):
-    
-    dataset_dir = build_dir + '/dataset'
+
     float_model = build_dir + '/float_model'
 
     # detect if a GPU is available
@@ -37,12 +36,12 @@ def train_test(build_dir, batchsize, learnrate, epochs):
 
     # prepare dataset
     train_data = datasets.ImageFolder(
-        dataset_dir + '/Trail_dataset/train_data',
+        'dataset/Trail_dataset/train_data',
         transform = transforms.Compose([transforms.ToTensor()])                         
     )
 
     test_data = datasets.ImageFolder(
-        dataset_dir + '/Trail_dataset/test_data',
+        'dataset/Trail_dataset/test_data',
         transform = transforms.Compose([transforms.ToTensor()])                         
     )
 
@@ -66,7 +65,7 @@ def train_test(build_dir, batchsize, learnrate, epochs):
     # save the trained model
     shutil.rmtree(float_model, ignore_errors=True)    
     os.makedirs(float_model)   
-    save_path = os.path.join(float_model, 'f_model_new.pth')
+    save_path = os.path.join(float_model, 'f_model.pth')
     torch.save(model.state_dict(), save_path)
     print('Trained model written to', save_path)
 
