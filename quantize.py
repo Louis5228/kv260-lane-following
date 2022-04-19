@@ -30,7 +30,7 @@ def quantize(build_dir, quant_mode, batchsize):
 
     # load trained model
     model = CNN_Model().to(device)
-    model.load_state_dict(torch.load(os.path.join(float_model, 'f_model.pth')))
+    model.load_state_dict(torch.load(os.path.join(float_model, 'lane_following.pth'), map_location=device))
 
     # override batchsize if in test mode
     if (quant_mode=='test'):
